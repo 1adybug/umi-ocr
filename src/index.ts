@@ -139,12 +139,17 @@ export async function imageOcr<T extends ImageOcrDataFormat = ImageOcrDataFormat
     if (typeof image === "string") {
         base64 = image
     } else if (image instanceof Blob) {
-        base64 = await new Promise<string>((resolve, reject) => {
-            const reader = new FileReader()
-            reader.readAsDataURL(image)
-            reader.addEventListener("load", () => resolve(reader.result as string))
-            reader.addEventListener("error", reject)
-        })
+        if (globalThis.FileReader) {
+            base64 = await new Promise<string>((resolve, reject) => {
+                const reader = new FileReader()
+                reader.readAsDataURL(image)
+                reader.addEventListener("load", () => resolve(reader.result as string))
+                reader.addEventListener("error", reject)
+            })
+        } else if (globalThis.Buffer) {
+            base64 = Buffer.from(await image.arrayBuffer()).toString("base64")
+        }
+        throw new Error("Blob is not supported in this environment")
     } else {
         base64 = image.toString("base64")
     }
