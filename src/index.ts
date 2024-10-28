@@ -121,7 +121,7 @@ export type ImageOcrResult = {
  * @param options 选项
  * @returns 识别结果
  */
-export async function imageOcr(image: string | Blob | Buffer, options: ImageOcrOptions): Promise<ImageOcrResult> {
+export async function imageOcr(image: string | Blob | Buffer, options?: ImageOcrOptions): Promise<ImageOcrResult> {
     let base64: string
     if (typeof image === "string") {
         base64 = image
@@ -135,7 +135,7 @@ export async function imageOcr(image: string | Blob | Buffer, options: ImageOcrO
     } else {
         base64 = image.toString("base64")
     }
-    const url = options.url ?? "http://127.0.0.1:1224/api/ocr"
+    const url = options?.url ?? "http://127.0.0.1:1224/api/ocr"
     const response = await fetch(url, {
         method: "POST",
         headers: {

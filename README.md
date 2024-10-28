@@ -116,5 +116,5 @@ export type ImageOcrResult = {
  * @param options 选项
  * @returns 识别结果
  */
-export declare function imageOcr(image: string | Blob | Buffer, options: ImageOcrOptions): Promise<ImageOcrResult>;
+export declare function imageOcr(image: string | Blob | Buffer, options?: ImageOcrOptions): Promise<ImageOcrResult>;
 ```
