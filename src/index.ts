@@ -148,8 +148,9 @@ export async function imageOcr<T extends ImageOcrDataFormat = ImageOcrDataFormat
             })
         } else if (globalThis.Buffer) {
             base64 = Buffer.from(await image.arrayBuffer()).toString("base64")
+        } else {
+            throw new Error("Blob is not supported in this environment")
         }
-        throw new Error("Blob is not supported in this environment")
     } else {
         base64 = image.toString("base64")
     }
