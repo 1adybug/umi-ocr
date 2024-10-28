@@ -59,19 +59,47 @@ export declare enum ImageDataFormat {
 }
 /** 图像 Ocr 选项 */
 export type ImageOcrOptions = {
-    /** api 地址，默认 http://127.0.0.1:1224/api/ocr */
+    /** api 地址
+     *
+     * @default "http://127.0.0.1:1224/api/ocr"
+     */
     url?: string;
-    /** 语言/模型库 */
+    /** 语言/模型库，默认简体中文 */
     "ocr.language"?: ImageOcrLanguage;
-    /** 纠正文本方向 */
+    /**
+     * 纠正文本方向
+     *
+     * 启用方向分类，识别倾斜或倒置的文本。可能降低识别速度
+     *
+     * @default false
+     */
     "ocr.cls"?: boolean;
-    /** 限制图像边长 */
+    /**
+     * 限制图像边长
+     *
+     * 将边长大于该值的图片进行压缩，可以提高识别速度。可能降低识别精度
+     *
+     * @default 960
+     */
     "ocr.limit_side_len"?: ImageOcrLimitSideLen;
-    /** 排版解析方案 */
+    /**
+     * 排版解析方案
+     *
+     * 按什么方式，解析和排序图片中的文字块
+     *
+     * @default "multi_para"
+     */
     "tbpu.parser"?: ImageTbpuParser;
-    /** 忽略区域?: 数组，每一项为 [[左上角x,y],[右下角x,y]] */
+    /** 忽略区域
+     *
+     * 数组，每一项为 [[左上角x,y],[右下角x,y]]
+     */
     "tbpu.ignoreArea"?: [number, number][][];
-    /** 数据返回格式 */
+    /**
+     * 数据返回格式
+     *
+     * @default "dict"
+     */
     "data.format"?: ImageDataFormat;
 };
 /** 图像 Ocr 结果 */
