@@ -32,7 +32,7 @@ export declare enum ImageOcrLimitSideLen {
     Unlimited = 999999
 }
 /** 排版解析方案 */
-export declare enum ImageTbpuParser {
+export declare enum ImageOcrTbpuParser {
     /** 多栏-按自然段换行 */
     MultiPara = "multi_para",
     /** 多栏-总是换行 */
@@ -51,14 +51,14 @@ export declare enum ImageTbpuParser {
     None = "none"
 }
 /** 数据返回格式 */
-export declare enum ImageDataFormat {
+export declare enum ImageOcrDataFormat {
     /** 含有位置等信息的原始字典 */
     Dict = "dict",
     /** 纯文本 */
     Text = "text"
 }
 /** 图像 Ocr 选项 */
-export type ImageOcrOptions<T extends ImageDataFormat = ImageDataFormat.Dict> = {
+export type ImageOcrOptions<T extends ImageOcrDataFormat = ImageOcrDataFormat.Dict> = {
     /** api 地址
      *
      * @default "http://127.0.0.1:1224/api/ocr"
@@ -89,7 +89,7 @@ export type ImageOcrOptions<T extends ImageDataFormat = ImageDataFormat.Dict> = 
      *
      * @default "multi_para"
      */
-    "tbpu.parser"?: ImageTbpuParser;
+    "tbpu.parser"?: ImageOcrTbpuParser;
     /** 忽略区域
      *
      * 数组，每一项为 [[左上角x,y],[右下角x,y]]
@@ -112,9 +112,9 @@ export type ImageOcrDictData = {
     end: string;
 };
 /** 图像 Ocr 结果 */
-export type ImageOcrResult<T extends ImageDataFormat = ImageDataFormat.Dict> = {
+export type ImageOcrResult<T extends ImageOcrDataFormat = ImageOcrDataFormat.Dict> = {
     code: number;
-    data: T extends ImageDataFormat.Dict ? ImageOcrDictData[] : string;
+    data: T extends ImageOcrDataFormat.Dict ? ImageOcrDictData[] : string;
     score: number;
     time: number;
     timestamp: number;
@@ -125,5 +125,5 @@ export type ImageOcrResult<T extends ImageDataFormat = ImageDataFormat.Dict> = {
  * @param options 选项
  * @returns 识别结果
  */
-export declare function imageOcr<T extends ImageDataFormat = ImageDataFormat.Dict>(image: string | Blob | Buffer, options?: ImageOcrOptions<T>): Promise<ImageOcrResult<T>>;
+export declare function imageOcr<T extends ImageOcrDataFormat = ImageOcrDataFormat.Dict>(image: string | Blob | Buffer, options?: ImageOcrOptions<T>): Promise<ImageOcrResult<T>>;
 ```
