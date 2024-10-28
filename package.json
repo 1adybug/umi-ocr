@@ -1,0 +1,41 @@
+{
+    "name": "umi-ocr",
+    "version": "0.0.1",
+    "description": "",
+    "main": "dist/cjs/index.js",
+    "module": "dist/esm/index.js",
+    "types": "dist/esm/index.d.ts",
+    "scripts": {
+        "dev": "father dev",
+        "build": "father build",
+        "postbuild": "node ./scripts/markdown.mjs",
+        "build:deps": "father prebundle",
+        "prepublishOnly": "father doctor && npm run build"
+    },
+    "keywords": [
+        "ocr",
+        "umi-ocr",
+        "umi",
+        "中文ocr",
+        "文字识别"
+    ],
+    "authors": [],
+    "license": "MIT",
+    "files": [
+        "compiled",
+        "dist",
+        "src"
+    ],
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/1adybug/umi-ocr.git"
+    },
+    "devDependencies": {
+        "@types/node": "^22.8.1",
+        "father": "^4.5.1"
+    }
+}
