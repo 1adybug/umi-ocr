@@ -55,7 +55,7 @@ export enum ImageDataFormat {
 }
 
 /** 图像 Ocr 选项 */
-export type ImageOcrOptions = {
+export type ImageOcrOptions<T extends ImageDataFormat = ImageDataFormat.Dict> = {
     /** api 地址
      *
      * @default "http://127.0.0.1:1224/api/ocr"
@@ -100,16 +100,26 @@ export type ImageOcrOptions = {
 
     /**
      * 数据返回格式
-     * 
+     *
      * @default "dict"
      */
-    "data.format"?: ImageDataFormat
+    "data.format"?: T
+}
+
+/**
+ * 含有位置等信息的原始字典
+ */
+export type ImageOcrDictData = {
+    box: [number, number][]
+    score: number
+    text: string
+    end: string
 }
 
 /** 图像 Ocr 结果 */
-export type ImageOcrResult = {
+export type ImageOcrResult<T extends ImageDataFormat = ImageDataFormat.Dict> = {
     code: number
-    data: string
+    data: T extends ImageDataFormat.Dict ? ImageOcrDictData[] : string
     score: number
     time: number
     timestamp: number
@@ -121,7 +131,10 @@ export type ImageOcrResult = {
  * @param options 选项
  * @returns 识别结果
  */
-export async function imageOcr(image: string | Blob | Buffer, options?: ImageOcrOptions): Promise<ImageOcrResult> {
+export async function imageOcr<T extends ImageDataFormat = ImageDataFormat.Dict>(
+    image: string | Blob | Buffer,
+    options?: ImageOcrOptions<T>
+): Promise<ImageOcrResult<T>> {
     let base64: string
     if (typeof image === "string") {
         base64 = image
