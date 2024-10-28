@@ -148,6 +148,7 @@ export async function imageOcr<T extends ImageDataFormat = ImageDataFormat.Dict>
     } else {
         base64 = image.toString("base64")
     }
+    base64 = base64.replace(/^data:.+base64,/, "")
     const url = options?.url ?? "http://127.0.0.1:1224/api/ocr"
     const response = await fetch(url, {
         method: "POST",
