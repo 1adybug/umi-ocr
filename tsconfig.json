@@ -7,5 +7,6 @@
         "target": "ESNext",
         "module": "ESNext",
         "moduleResolution": "Bundler"
-    }
+    },
+    "exclude": ["dist"]
 }

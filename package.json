@@ -7,10 +7,12 @@
     "types": "dist/esm/index.d.ts",
     "scripts": {
         "dev": "father dev",
+        "prebuild": "npm run format && node scripts/writeExports.mjs",
         "build": "father build",
-        "postbuild": "node ./scripts/markdown.mjs",
+        "postbuild": "node ./scripts/markdown.mjs && npm run format",
         "build:deps": "father prebundle",
-        "prepublishOnly": "father doctor && npm run build"
+        "prepublishOnly": "father doctor && npm run build",
+        "format": "prettier --write ."
     },
     "keywords": [
         "ocr",
@@ -36,6 +38,8 @@
     },
     "devDependencies": {
         "@types/node": "^22.8.1",
-        "father": "^4.5.1"
+        "father": "^4.5.1",
+        "prettier": "^3.3.3",
+        "prettier-plugin-organize-imports": "^4.1.0"
     }
 }
