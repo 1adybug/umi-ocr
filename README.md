@@ -5,22 +5,26 @@
 ## 类型说明
 
 ```typescript
-/** 语言/模型库 */
+/**
+ * 语言/模型库
+ */
 export declare enum ImageOcrLanguage {
     /** 简体中文 */
-    简体中文 = "models/config_chinese.txt",
-    /** English */
-    English = "models/config_en.txt",
-    /** 繁體中文 */
-    繁體中文 = "models/config_chinese_cht(v2).txt",
-    /** 日本語 */
-    日本語 = "models/config_japan.txt",
-    /** 한국어 */
-    한국어 = "models/config_korean.txt",
-    /** Русский */
-    Русский = "models/config_cyrillic.txt"
+    "zh" = "models/config_chinese.txt",
+    /** 英文，English */
+    "en" = "models/config_en.txt",
+    /** 繁体中文，繁體中文 */
+    "zh-tw" = "models/config_chinese_cht(v2).txt",
+    /** 日本语，日本語 */
+    "ja" = "models/config_japan.txt",
+    /** 韩语，한국어 */
+    "ko" = "models/config_korean.txt",
+    /** 俄语，Русский */
+    "ru" = "models/config_cyrillic.txt"
 }
-/** 限制图像边长 */
+/**
+ * 限制图像边长
+ */
 export declare enum ImageOcrLimitSideLen {
     /** 960 （默认） */
     Default = 960,
@@ -31,7 +35,9 @@ export declare enum ImageOcrLimitSideLen {
     /** 无限制 */
     Unlimited = 999999
 }
-/** 排版解析方案 */
+/**
+ * 排版解析方案
+ */
 export declare enum ImageOcrTbpuParser {
     /** 多栏-按自然段换行 */
     MultiPara = "multi_para",
@@ -50,21 +56,24 @@ export declare enum ImageOcrTbpuParser {
     /** 不做处理 */
     None = "none"
 }
-/** 数据返回格式 */
+/**
+ * 数据返回格式
+ */
 export declare enum ImageOcrDataFormat {
     /** 含有位置等信息的原始字典 */
     Dict = "dict",
     /** 纯文本 */
     Text = "text"
 }
-/** 图像 Ocr 选项 */
+/**
+ * 图像 Ocr 选项
+ */
 export type ImageOcrOptions<T extends ImageOcrDataFormat = ImageOcrDataFormat.Dict> = {
-    /** api 地址
+    /**
+     * 语言/模型库
      *
-     * @default "http://127.0.0.1:1224/api/ocr"
+     * @default ImageOcrLanguage.zh
      */
-    url?: string;
-    /** 语言/模型库，默认简体中文 */
     "ocr.language"?: ImageOcrLanguage;
     /**
      * 纠正文本方向
@@ -79,7 +88,7 @@ export type ImageOcrOptions<T extends ImageOcrDataFormat = ImageOcrDataFormat.Di
      *
      * 将边长大于该值的图片进行压缩，可以提高识别速度。可能降低识别精度
      *
-     * @default 960
+     * @default ImageOcrLimitSideLen.Default
      */
     "ocr.limit_side_len"?: ImageOcrLimitSideLen;
     /**
@@ -87,7 +96,7 @@ export type ImageOcrOptions<T extends ImageOcrDataFormat = ImageOcrDataFormat.Di
      *
      * 按什么方式，解析和排序图片中的文字块
      *
-     * @default "multi_para"
+     * @default ImageOcrTbpuParser.MultiPara
      */
     "tbpu.parser"?: ImageOcrTbpuParser;
     /** 忽略区域
@@ -98,9 +107,26 @@ export type ImageOcrOptions<T extends ImageOcrDataFormat = ImageOcrDataFormat.Di
     /**
      * 数据返回格式
      *
-     * @default "dict"
+     * @default ImageOcrDataFormat.Dict
      */
     "data.format"?: T;
+};
+/**
+ * 图像 Ocr 选项，含有 api 地址
+ */
+export type ImageOcrOptionsWithUrl<T extends ImageOcrDataFormat = ImageOcrDataFormat.Dict> = ImageOcrOptions<T> & {
+    /** api 地址
+     *
+     * @default "http://127.0.0.1:1224/api/ocr"
+     */
+    url?: string;
+};
+/**
+ * 图像 Ocr 请求体
+ */
+export type ImageOcrBody<T extends ImageOcrDataFormat = ImageOcrDataFormat.Dict> = {
+    base64: Base64;
+    options?: ImageOcrOptions<T>;
 };
 /**
  * 含有位置等信息的原始字典
@@ -111,7 +137,9 @@ export type ImageOcrDictData = {
     text: string;
     end: string;
 };
-/** 图像 Ocr 结果 */
+/**
+ * 图像 Ocr 结果
+ */
 export type ImageOcrResult<T extends ImageOcrDataFormat = ImageOcrDataFormat.Dict> = {
     code: number;
     data: T extends ImageOcrDataFormat.Dict ? ImageOcrDictData[] : string;
@@ -120,10 +148,36 @@ export type ImageOcrResult<T extends ImageOcrDataFormat = ImageOcrDataFormat.Dic
     timestamp: number;
 };
 /**
- * 图像识别
- * @param image 图像，支持 base64、Blob、Buffer
- * @param options 选项
- * @returns 识别结果
+ * base64
  */
-export declare function imageOcr<T extends ImageOcrDataFormat = ImageOcrDataFormat.Dict>(image: string | Blob | Buffer, options?: ImageOcrOptions<T>): Promise<ImageOcrResult<T>>;
+export type Base64 = string;
+/**
+ * 支持的文件类型
+ */
+export type FileType = Base64 | Blob | Buffer;
+/**
+ * 获取文件的 base64
+ * @param {FileType} file 文件，支持 base64、Blob、Buffer
+ * @returns {Base64} base64
+ */
+export declare function getBase64(file: FileType): Promise<Base64>;
+/**
+ * 移除 base64 头部
+ * @param {Base64} base64 base64
+ * @returns {Base64} base64
+ */
+export declare function removeBase64Header(base64: Base64): Base64;
+/**
+ * 获取文件的 base64，不包含头部
+ * @param {FileType} file 文件，支持 base64、Blob、Buffer
+ * @returns {Base64} base64
+ */
+export declare function getBase64WithoutHeader(file: FileType): Promise<Base64>;
+/**
+ * 图像识别
+ * @param { FileType } image 图像，支持 base64、Blob、Buffer
+ * @param { ImageOcrOptionsWithUrl } optionsWithUrl 选项
+ * @returns {ImageOcrResult} 识别结果
+ */
+export declare function imageOcr<T extends ImageOcrDataFormat = ImageOcrDataFormat.Dict>(image: FileType, optionsWithUrl?: ImageOcrOptionsWithUrl<T>): Promise<ImageOcrResult<T>>;
 ```
