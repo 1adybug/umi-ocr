@@ -1,5 +1,5 @@
-import { Base64, FileType } from "src/utils"
-import { getBase64WithoutHeader } from "src/utils/getBase64WithoutHeader"
+import { Base64, FileType } from "../utils"
+import { getBase64WithoutHeader } from "../utils/getBase64WithoutHeader"
 
 /**
  * 语言/模型库

@@ -1,5 +1,5 @@
-import { Base64, FileType } from "src/utils"
-import { getBase64WithoutHeader } from "src/utils/getBase64WithoutHeader"
+import { Base64, FileType } from "../utils"
+import { getBase64WithoutHeader } from "../utils/getBase64WithoutHeader"
 
 /**
  * 二维码识别预处理选项类型
